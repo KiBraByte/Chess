@@ -1,6 +1,7 @@
-#include <iostream>
+#include "./board/Board.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    jezz::Board b{};
+    b.print_board();
     return 0;
 }
