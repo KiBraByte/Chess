@@ -25,7 +25,7 @@ namespace jezz {
         virtual ~Piece() = default;
 
         virtual bool valid_move(Pos & from, Pos & to) = 0;
-        virtual void calc_possible_moves(piece_map_t & d, Pos & curr_pos) = 0;
+        virtual void calc_possible_moves(piece_map_t & pieces, Pos & curr_pos) = 0;
 
         const Move::move_set & get_possible_moves() const;
         int getMaterial() const;

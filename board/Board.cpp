@@ -7,17 +7,6 @@
 
 namespace jezz {
     Board::Board() : whites_turn(true) {
-        pieces.insert({{1,1}, std::make_shared<Pawn>(true)});
-
-        Pos p{1,1};
-
-        pieces[{1,1}]->calc_possible_moves(pieces,p);
-        for (auto & pair : pieces)
-            std::cout << *pair.second << "\n";
-
-        for (auto & pair : pieces[{1,1}]->get_possible_moves()  )
-            std::cout << pair << "\n";
-
     }
 
     Board::~Board() = default;
