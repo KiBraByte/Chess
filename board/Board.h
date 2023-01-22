@@ -10,13 +10,13 @@
 #include "../pieces/Piece.h"
 #include "../utility/utility.h"
 #include "../pieces/Pawn.h"
+#include "../pieces/Rook.h"
 
 namespace jezz {
 
 
     class Board {
     private:
-        //Piece** board = new Piece*[rows * columns]{nullptr};
         Piece::piece_map_t pieces;
         bool whites_turn;
     public:

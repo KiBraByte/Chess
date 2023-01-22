@@ -9,9 +9,8 @@
 
 namespace jezz {
     class Rook : public Piece {
-    private:
     public:
-        Rook(int material, bool isWhite, char abbreviation);
+        Rook(bool is_white);
 
         bool valid_move(Pos &from, Pos &to) override;
 
