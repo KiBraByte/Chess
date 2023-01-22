@@ -1,19 +1,24 @@
 //
 // Created by kilian on 1/21/2023.
 //
+
+#ifndef CHESS_BOARD_H
+#define CHESS_BOARD_H
+
 #include <vector>
 #include <memory>
 #include "../pieces/Piece.h"
 #include "../utility/utility.h"
 #include "../pieces/Pawn.h"
-#ifndef CHESS_BOARD_H
-#define CHESS_BOARD_H
 
 namespace jezz {
 
+
     class Board {
     private:
-        Piece** board = new Piece*[rows * columns]{nullptr};
+        //Piece** board = new Piece*[rows * columns]{nullptr};
+        Piece::piece_map_t pieces;
+        bool whites_turn;
     public:
         Board();
         ~Board();
