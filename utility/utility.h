@@ -33,14 +33,16 @@ namespace jezz {
         Pos &operator+=(const Pos &o);
     };
 
+    Pos operator+(const Pos & first, const Pos & second);
+
     enum class MoveType {
         NONE, NORMAL, CHECK, TAKE, PROMOTION, EN_PASSANT
     };
     enum class Dir {
-        UP, DOWN, LEFT, RIGHT
+        UP, DOWN, LEFT, RIGHT, NONE
     };
 
-    struct Move : Pos {
+    struct Move : public Pos {
         typedef std::unordered_set<Move, std::hash<Pos>> move_set;
         MoveType type;
 
@@ -54,20 +56,17 @@ namespace jezz {
 
         explicit Move(Pos pos);
     };
-}
+    //----------------------------------------Functions--------------------------------------------------
 
-//----------------------------------------Functions--------------------------------------------------
-namespace jezz {
+    //Pos get_dirs_as_pos(Dir dir, bool is_white = true);
+    //Pos get_dirs_as_pos(Dir dir, Dir dir2, bool is_white = true);
 
-    Pos get_dirs_as_pos(Dir dir, bool is_white = true);
-
-    Pos get_dirs_as_pos(Dir dir, Dir dir2, bool is_white = true);
+    Pos get_dirs_as_pos(bool is_white, Dir dir, Dir dir2 = Dir::NONE, Dir dir3 = Dir::NONE);
 
     template <typename Enumeration>
     auto as_integer(Enumeration const value) -> typename std::underlying_type<Enumeration>::type {
             return static_cast<typename std::underlying_type<Enumeration>::type>(value);
     }
-
     //-----------------------------------<< Operator overrides---------------------------------------
     std::ostream& operator<< (std::ostream& os, const Pos & pos);
 

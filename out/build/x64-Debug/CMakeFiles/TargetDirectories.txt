@@ -1,0 +1,3 @@
+C:/Users/kilian/OneDrive - HTL Wels/Schule/Programming/Chess/out/build/x64-Debug/CMakeFiles/Chess.dir
+C:/Users/kilian/OneDrive - HTL Wels/Schule/Programming/Chess/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/kilian/OneDrive - HTL Wels/Schule/Programming/Chess/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir

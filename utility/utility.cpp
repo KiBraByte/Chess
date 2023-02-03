@@ -25,8 +25,12 @@ namespace jezz {
         return *this;
     }
 
+    Pos operator+(const Pos & first, const Pos & second) {
+       return {(first.y + second.y), (first.x + second.x)};
+    }
+
     std::ostream &operator<<(std::ostream &os, const Pos &pos) {
-        return (os << "y: " << pos.y << " x: " << pos.x << "\n");
+        return (os << "y: " << pos.y << " x: " << pos.x);
     }
 
     Move::Move(int y, int x) : Move(y, x, MoveType::NONE){}
@@ -40,7 +44,7 @@ namespace jezz {
     Move::Move(Pos pos) : Move(pos, MoveType::NONE) {}
 
     std::ostream &operator<<(std::ostream &os, const Move &move) {
-        return (os << "y: " << move.y << " x: " << move.x << ' ' << move.type <<  "\n");
+        return (os << "y: " << move.y << " x: " << move.x << ' ' << move.type);
     }
 
     std::ostream& operator<< (std::ostream& os, const MoveType & move_type) {
@@ -58,16 +62,25 @@ namespace jezz {
 
 
     std::unordered_map<Dir, Pos> dir_as_pos = {{Dir::DOWN, {1,0}}, {Dir::UP, {-1,0}},
-                                                              {Dir::LEFT, {0,-1}},{Dir::RIGHT, {0,1}}};
+                                               {Dir::LEFT, {0,-1}},{Dir::RIGHT, {0,1}},
+                                               {Dir::NONE, {0,0}}};
 
-    Pos get_dirs_as_pos(Dir dir, bool is_white) {
+
+//TODO: maybe variadic function ?
+   /* Pos get_dirs_as_pos(Dir dir, bool is_white) {
         Pos pos (dir_as_pos[dir]);
         pos.y *= (is_white ? 1 : -1);
         return pos;
-    }
+    }*/
 
-    Pos get_dirs_as_pos(Dir dir, Dir dir2, bool is_white) {
-        Pos pos ((dir_as_pos[dir] += dir_as_pos[dir2]));
+    /*Pos get_dirs_as_pos(Dir dir, Dir dir2, bool is_white) {
+        Pos pos ((dir_as_pos[dir] + dir_as_pos[dir2]));
+        pos.y *= (is_white ? 1 : -1);
+        return pos;
+    }*/
+
+    Pos get_dirs_as_pos(bool is_white, Dir dir, Dir dir2,Dir dir3) {
+        Pos pos ((dir_as_pos[dir] + dir_as_pos[dir2] + dir_as_pos[dir3]));
         pos.y *= (is_white ? 1 : -1);
         return pos;
     }

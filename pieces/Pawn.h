@@ -18,8 +18,7 @@ namespace jezz {
 
         bool valid_move(Pos & from, Pos &  to) override;
 
-
-        void calc_possible_moves(piece_map_t & pieces, Pos & curr_pos) override;
+        Move::move_set calc_possible_moves(const piece_map_t & pieces, const Pos & curr_pos) override;
     };
 }
 
