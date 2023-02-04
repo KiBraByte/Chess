@@ -1,13 +1,7 @@
-//
-// Created by kilian on 1/22/2023.
-//
-
 #include "King.h"
 
 namespace jezz {
-
     King::King(bool is_white) : Piece(INT32_MAX, is_white, 'K') {}
-
 
     Move::move_set King::calc_possible_moves(const Piece::piece_map_t &pieces,const Pos &curr_pos) {
 
@@ -87,5 +81,4 @@ namespace jezz {
     bool King::valid_move(const Move &move) {
         return false;
     }
-
 }

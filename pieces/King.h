@@ -1,6 +1,3 @@
-//
-// Created by kilian on 31.01.2023.
-//
 #ifndef CHESS_KING_H
 #define CHESS_KING_H
 
@@ -29,6 +26,4 @@ namespace jezz {
         void setInCheckmate(bool inCheckmate);
     };
 }
-
-
 #endif //CHESS_KING_H

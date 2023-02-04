@@ -1,14 +1,10 @@
-//
-// Created by kilian on 1/21/2023.
-//
-
 #include <iostream>
 #include "Board.h"
 #include "../pieces/King.h"
 #include "../pieces/Knight.h"
 
 namespace jezz {
-    Board::Board() : whites_turn(true) {
+    Board::Board() {
         //Kings
         pieces.insert({w_king, std::make_shared<King>(true)});
         pieces.insert({b_king, std::make_shared<King>(false)});
@@ -127,8 +123,8 @@ namespace jezz {
         if (all_legal_moves.empty()) {
             std::shared_ptr<King> k_point = std::dynamic_pointer_cast<King>(pieces[get_own_king_pos(whites_turn)]);
             calc_legal_moves(!whites_turn);
-            if (k_point->isInCheck()) std::cout << "it is a win {Checkmate}" << '\n';
-            else std::cout << "it is a win {stalemate}" << '\n';
+            is_check_mate = k_point->isInCheck();
+            is_stale_mate = !is_check_mate;
         }
 
         return true;
@@ -205,5 +201,13 @@ namespace jezz {
             }
         }
         return legal_mvs;
+    }
+
+    bool Board::isCheckMate() const {
+        return is_check_mate;
+    }
+
+    bool Board::isStaleMate() const {
+        return is_stale_mate;
     }
 } // jezz

@@ -1,7 +1,3 @@
-//
-// Created by kilian on 1/21/2023.
-//
-
 #include <iostream>
 #include "Pawn.h"
 #include "King.h"
@@ -10,9 +6,6 @@ namespace jezz {
     Pawn::Pawn(bool is_white) : Piece(1,is_white,'P'){}
 
     Move::move_set Pawn::calc_possible_moves(const piece_map_t & pieces, const Pos & curr_pos) {
-        //TODO: Implement
-
-
         Move::move_set possible_moves;
 
         if (!pieces.count(curr_pos) && this != pieces.at(curr_pos).get()) return possible_moves;

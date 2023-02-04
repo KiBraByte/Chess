@@ -1,7 +1,3 @@
-//
-// Created by kilian on 1/21/2023.
-//
-
 #ifndef CHESS_BOARD_H
 #define CHESS_BOARD_H
 
@@ -24,7 +20,7 @@ namespace jezz {
         Pos w_king{7,'e'}, b_king{0,'e'};
         //std::vector<std::shared_ptr<Piece>> white_pieces_taken;
         //std::vector<std::shared_ptr<Piece>> black_pieces_taken;
-        bool whites_turn;
+        bool whites_turn{true}, is_check_mate{false}, is_stale_mate{false};
 
         static Pos move_piece(Piece::piece_map_t & pieces, const Move & move);
     public:
@@ -39,7 +35,10 @@ namespace jezz {
         Move::move_set calc_legal_moves(bool is_white);
         //bool is_board_valid(Piece::piece_map_t & new_board);
         //void calc_all_possible_moves();
+
+        bool isCheckMate() const;
+
+        bool isStaleMate() const;
     };
 } // jezz
-
 #endif //CHESS_BOARD_H

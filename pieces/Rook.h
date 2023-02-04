@@ -1,7 +1,3 @@
-//
-// Created by kilian on 1/22/2023.
-//
-
 #ifndef CHESS_ROOK_H
 #define CHESS_ROOK_H
 
@@ -18,6 +14,4 @@ namespace jezz {
     };
 
 }
-
-
 #endif //CHESS_ROOK_H

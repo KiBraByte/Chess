@@ -1,16 +1,9 @@
-//
-// Created by kilian on 1/22/2023.
-//
-
 #include "Knight.h"
 namespace jezz {
 
     Knight::Knight(bool is_white) : Piece(3,is_white,'N') {}
 
     Move::move_set Knight::calc_possible_moves(const Piece::piece_map_t &pieces, const Pos &curr_pos) {
-        //if (!pieces.count(curr_pos) && this != pieces.at(curr_pos).get());
-
-
         //-----------------moves/take--------------------------------
         Pos p((curr_pos + get_dirs_as_pos(is_white, Dir::UP,Dir::UP,Dir::RIGHT)));
         Move::move_set possible_moves;

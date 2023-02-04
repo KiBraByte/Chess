@@ -1,7 +1,3 @@
-//
-//
-// Created by kilian on 1/20/2023.
-//
 #ifndef CHESS_PIECE_H
 #define CHESS_PIECE_H
 
@@ -51,5 +47,4 @@ namespace jezz {
         friend std::ostream& operator<<(std::ostream & os, const Piece & piece);
     };
 } // chesspiece
-
 #endif

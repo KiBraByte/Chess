@@ -1,7 +1,3 @@
-//
-// Created by kilian on 1/20/2023.
-//
-
 #include "Piece.h"
 #include "King.h"
 #include "Queen.h"
@@ -71,5 +67,4 @@ namespace jezz {
     int Piece::getTimesMoved() const {
         return times_moved;
     }
-
 } // chesspiece
