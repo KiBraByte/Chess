@@ -18,11 +18,16 @@ namespace jezz {
         Piece::piece_map_t pieces;
         Move::move_set all_legal_moves;
         Pos w_king{7,'e'}, b_king{0,'e'};
-        //std::vector<std::shared_ptr<Piece>> white_pieces_taken;
-        //std::vector<std::shared_ptr<Piece>> black_pieces_taken;
+        std::vector<std::shared_ptr<Piece>> white_pieces_taken;
+        std::vector<std::shared_ptr<Piece>> black_pieces_taken;
         bool whites_turn{true}, is_check_mate{false}, is_stale_mate{false};
 
         static Pos move_piece(Piece::piece_map_t & pieces, const Move & move);
+        const std::function<void(const Pos &)> add_to_taken = [&](const Pos & pos) {
+            if (!pieces.count(pos)) return;
+            if (pieces[pos]->isWhite()) white_pieces_taken.push_back(pieces[pos]);
+            else black_pieces_taken.push_back(pieces[pos]);
+        };
     public:
         Board();
         ~Board();
@@ -39,6 +44,10 @@ namespace jezz {
         bool isCheckMate() const;
 
         bool isStaleMate() const;
+
+        const std::vector<std::shared_ptr<Piece>> &getWhitePiecesTaken() const;
+
+        const std::vector<std::shared_ptr<Piece>> &getBlackPiecesTaken() const;
     };
 } // jezz
 #endif //CHESS_BOARD_H

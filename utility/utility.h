@@ -24,10 +24,6 @@ namespace jezz {
 
         Pos() = default;
 
-        [[nodiscard]] int get_2dInt() const;
-
-        static Pos from_2dint_to_pos(int val);
-
         bool operator==(const Pos &o) const;
 
         Pos &operator+=(const Pos &o);

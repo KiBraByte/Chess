@@ -1,10 +1,6 @@
 #include "Bishop.h"
 
 namespace jezz {
-    bool Bishop::valid_move(const Move & move) {
-        return false;
-    }
-
     Move::move_set Bishop::calc_possible_moves(const Piece::piece_map_t &pieces, const Pos &curr_pos) {
         //TODO: Implement
 
@@ -25,5 +21,5 @@ namespace jezz {
         return possible_moves;
     }
 
-    Bishop::Bishop(bool is_white) : Piece(3,is_white,'B') {}
+    Bishop::Bishop(bool is_white) : Piece(3,is_white,is_white ? 'B' : 'b') {}
 }

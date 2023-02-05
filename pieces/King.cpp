@@ -1,7 +1,7 @@
 #include "King.h"
 
 namespace jezz {
-    King::King(bool is_white) : Piece(INT32_MAX, is_white, 'K') {}
+    King::King(bool is_white) : Piece(INT32_MAX, is_white, is_white ? 'K' : 'k') {}
 
     Move::move_set King::calc_possible_moves(const Piece::piece_map_t &pieces,const Pos &curr_pos) {
 
@@ -46,14 +46,6 @@ namespace jezz {
         in_check = inCheck;
     }
 
-    bool King::isInCheckmate() const {
-        return in_checkmate;
-    }
-
-    void King::setInCheckmate(bool inCheckmate) {
-        in_checkmate = inCheckmate;
-    }
-
     Move::move_set King::check_castle(const Piece::piece_map_t &pieces, const Pos & curr_pos) {
         Move::move_set moves;
         int row = is_white ? 7 : 0;
@@ -76,9 +68,5 @@ namespace jezz {
                 moves.insert(Move{curr_pos, {row,0}, MoveType::CASTLE_QUEEN});
 
         return moves;
-    }
-
-    bool King::valid_move(const Move &move) {
-        return false;
     }
 }

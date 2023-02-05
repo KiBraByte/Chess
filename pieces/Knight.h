@@ -8,9 +8,6 @@ namespace jezz {
         explicit Knight(bool is_white);
 
         Move::move_set calc_possible_moves(const piece_map_t &pieces,const Pos &curr_pos) override;
-
-        bool valid_move(const Move &move) override;
     };
 }
-
 #endif //CHESS_KNIGHT_H

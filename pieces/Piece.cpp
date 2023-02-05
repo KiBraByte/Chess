@@ -1,6 +1,5 @@
 #include "Piece.h"
 #include "King.h"
-#include "Queen.h"
 
 namespace jezz {
     Piece::Piece(int material, bool is_white, char abb) : material(material),
@@ -31,7 +30,7 @@ namespace jezz {
     }
 
     std::ostream& operator<<(std::ostream& os, const Piece& piece) {
-        return (os << piece.abbreviation << ' ' << piece.is_white << '\n');
+        return (os << piece.abbreviation);
     }
 
     Move::move_set Piece::calc_all_moves_in_dir(const Piece::piece_map_t &pieces, const Pos &start_pos, Dir dir1, Dir dir2, Dir dir3) {

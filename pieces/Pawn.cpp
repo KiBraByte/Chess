@@ -1,9 +1,8 @@
-#include <iostream>
 #include "Pawn.h"
 #include "King.h"
 
 namespace jezz {
-    Pawn::Pawn(bool is_white) : Piece(1,is_white,'P'){}
+    Pawn::Pawn(bool is_white) : Piece(1,is_white,is_white ? 'P' : 'p'){}
 
     Move::move_set Pawn::calc_possible_moves(const piece_map_t & pieces, const Pos & curr_pos) {
         Move::move_set possible_moves;
@@ -58,9 +57,5 @@ namespace jezz {
         check_for_en_passant(curr_pos + get_dirs_as_pos(is_white, Dir::RIGHT));
 
         return possible_moves;
-    }
-
-    bool Pawn::valid_move(const Move &move) {
-        return false;
     }
 }

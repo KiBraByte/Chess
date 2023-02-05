@@ -31,7 +31,6 @@ namespace jezz {
     public:
         Piece(int material, bool is_white, char abbreviation);
         virtual ~Piece() = default;
-        virtual bool valid_move(const Move & move) = 0;
         virtual Move::move_set calc_possible_moves(const piece_map_t & pieces, const Pos & curr_pos) = 0;
 
         //const Move::move_set & get_possible_moves() const;
@@ -39,7 +38,7 @@ namespace jezz {
         [[nodiscard]] bool isWhite() const;
         [[nodiscard]] char getAbbreviation() const;
         void increased_moved();
-        bool is_same_color(const Piece & is_white) const;
+        [[nodiscard]] bool is_same_color(const Piece & is_white) const;
 
         [[nodiscard]] int getTimesMoved() const;
         //void setPossibleMoves(const Move::move_set &possibleMoves);

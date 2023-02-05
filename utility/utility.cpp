@@ -8,13 +8,6 @@ namespace jezz {
     Pos::Pos(int y, int x) : x(x), y(y) {}
 
     Pos::Pos(int y, char x) : y(y), x(x - 'a'){}
-    int Pos::get_2dInt() const {
-        return y * columns + x;
-    }
-
-    Pos Pos::from_2dint_to_pos(int val) {
-        return {(val / columns), (val % columns)};
-    }
 
     bool Pos::operator==(const Pos &o) const {
        return (o.x == x)  && (o.y == y);

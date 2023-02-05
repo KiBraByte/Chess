@@ -44,8 +44,7 @@ namespace jezz {
 
 
     void Board::print_board() const {
-        std::cout << "\n\n";
-        std::cout << "  ";
+        std::cout << "\n\n  ";
         for (int i{0}; i < columns; ++i) std::cout << i << ' ';
         std::cout << "\n";
 
@@ -53,28 +52,11 @@ namespace jezz {
             std::cout << pos.y << ' ';
             for (pos.x = 0; pos.x < columns; ++pos.x) {
                 char c = pieces.count(pos) > 0 ? pieces.at(pos)->getAbbreviation() : '.';
-                if (c != '.' && !pieces.at(pos)->isWhite()) c = (char)(c - (('A' - 'a')));
                 std::cout << c << ' ';
             }
             std::cout << '\n';
         }
     }
-
-    /*void Board::print_board(Piece::piece_map_t & pieces) {
-        std::cout << "  ";
-        for (int i{0}; i < columns; ++i) std::cout << i << ' ';
-        std::cout << "\n";
-
-        for (Pos pos(0,0); pos.y < rows; ++pos.y) {
-            std::cout << pos.y << ' ';
-            for (pos.x = 0; pos.x < columns; ++pos.x) {
-                char c = pieces.count(pos) > 0 ? pieces.at(pos)->getAbbreviation() : '.';
-                std::cout << c << ' ';
-            }
-            std::cout << '\n';
-        }
-    }*/
-
     // check if the move is legal, doesn't change the value of in_check
     bool Board::is_legal_move(const Move & move) {
         if (!pieces.count(move.from)) return false;
@@ -101,7 +83,10 @@ namespace jezz {
     }
 
     bool Board::move(const Move & move) {
-        if (!is_legal_move(move)) return false;
+        if (!all_legal_moves.count(move)) return false;
+
+        if ((all_legal_moves.find(move)->type == MoveType::TAKE || all_legal_moves.find(move)->type == MoveType::EN_PASSANT) && pieces.count(move.to))
+            add_to_taken(move.to);
 
         Pos moved_to{move_piece(pieces, move)};
         if (!(moved_to == Pos{-1, -1}) && pieces.count(moved_to)) {
@@ -111,14 +96,9 @@ namespace jezz {
             if (k_point->isInCheck()) k_point->setInCheck(false);
         }
 
-
         whites_turn = !whites_turn;
         all_legal_moves.clear();
         all_legal_moves = calc_legal_moves(whites_turn);
-
-       //for (auto & mv : all_legal_moves)
-        //    std::cout << mv << '\n';
-
 
         if (all_legal_moves.empty()) {
             std::shared_ptr<King> k_point = std::dynamic_pointer_cast<King>(pieces[get_own_king_pos(whites_turn)]);
@@ -138,14 +118,6 @@ namespace jezz {
         is_white ? w_king = new_pos : b_king = new_pos;
     }
 
-    /*bool Board::is_board_valid(Piece::piece_map_t &new_pieces) {
-        return false;
-    }*/
-
-    /*void Board::calc_all_possible_moves() {
-        //for (auto & pair : )
-    }*/
-
     Pos Board::move_piece(Piece::piece_map_t &pieces, const Move & move) {
         Move::move_set moves = pieces[move.from]->calc_possible_moves(pieces,move.from);
         MoveType mt = moves.find(move)->type;
@@ -153,9 +125,9 @@ namespace jezz {
         int row = pieces[move.from]->isWhite() ? 7 : 0;
 
         switch (mt) {
+            case MoveType::TAKE:
             case MoveType::NORMAL:
             case MoveType::CHECK:
-            case MoveType::TAKE:
                 pieces[move.to] = pieces[move.from];
                 pieces.erase(move.from);
                 return move.to;
@@ -209,5 +181,13 @@ namespace jezz {
 
     bool Board::isStaleMate() const {
         return is_stale_mate;
+    }
+
+    const std::vector<std::shared_ptr<Piece>> &Board::getWhitePiecesTaken() const {
+        return white_pieces_taken;
+    }
+
+    const std::vector<std::shared_ptr<Piece>> &Board::getBlackPiecesTaken() const {
+        return black_pieces_taken;
     }
 } // jezz
