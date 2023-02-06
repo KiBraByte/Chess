@@ -1,7 +1,7 @@
 #include "Knight.h"
 namespace jezz {
 
-    Knight::Knight(bool is_white) : Piece(3,is_white,is_white ? 'N' : 'n') {}
+    Knight::Knight(bool is_white) : Piece(3,is_white,'N') {}
 
     Move::move_set Knight::calc_possible_moves(const Piece::piece_map_t &pieces, const Pos &curr_pos) {
         //-----------------moves/take--------------------------------

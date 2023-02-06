@@ -31,6 +31,7 @@ namespace jezz {
     public:
         Piece(int material, bool is_white, char abbreviation);
         virtual ~Piece() = default;
+        //TODO: THROW EXCEPTION
         virtual Move::move_set calc_possible_moves(const piece_map_t & pieces, const Pos & curr_pos) = 0;
 
         //const Move::move_set & get_possible_moves() const;

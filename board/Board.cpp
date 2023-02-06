@@ -52,6 +52,9 @@ namespace jezz {
             std::cout << pos.y << ' ';
             for (pos.x = 0; pos.x < columns; ++pos.x) {
                 char c = pieces.count(pos) > 0 ? pieces.at(pos)->getAbbreviation() : '.';
+                if (pieces.count(pos) && !pieces.at(pos)->isWhite())
+                    //std::cout << "\033[1;31m" << c << "\033[0m ";
+                    c = (char)(c - ('A' - 'a'));
                 std::cout << c << ' ';
             }
             std::cout << '\n';
@@ -64,22 +67,13 @@ namespace jezz {
         if (!pieces[move.from]->calc_possible_moves(pieces, move.from)
                                 .count({move.from, move.to, MoveType::NONE})) return false;
 
-        //Check if due to the move your own King is in check
-        std::shared_ptr<King> k_point = std::dynamic_pointer_cast<King>(pieces[get_own_king_pos(whites_turn)]);
-        bool was_in_check = k_point->isInCheck();
-        k_point->setInCheck(false);
+        if ((move.type == MoveType::CASTLE_QUEEN || move.type == MoveType::CASTLE_NORMAL) && calc_check(pieces,whites_turn)) return false;
 
+        //Check if due to the move your own King is in check
         Piece::piece_map_t tmp_copy = pieces;
         move_piece(tmp_copy,move);
 
-        //Position of own King
-        for (auto & pair : tmp_copy)
-            if (pair.second->isWhite() != whites_turn)
-                Move::move_set moves = pair.second->calc_possible_moves(tmp_copy, pair.first);
-
-        bool tmp = k_point->isInCheck();
-        k_point->setInCheck(was_in_check);
-        return !tmp;
+        return !calc_check(tmp_copy, whites_turn);
     }
 
     bool Board::move(const Move & move) {
@@ -89,33 +83,30 @@ namespace jezz {
             add_to_taken(move.to);
 
         Pos moved_to{move_piece(pieces, move)};
-        if (!(moved_to == Pos{-1, -1}) && pieces.count(moved_to)) {
+        if (!(moved_to == Pos{-1, -1}) && pieces.count(moved_to))
             pieces[moved_to]->increased_moved();
-            if (pieces[moved_to]->getAbbreviation() == 'K') set_own_king_pos(whites_turn, moved_to);
-            std::shared_ptr<King> k_point = std::dynamic_pointer_cast<King>(pieces[get_own_king_pos(whites_turn)]);
-            if (k_point->isInCheck()) k_point->setInCheck(false);
-        }
+        else return false;
+
 
         whites_turn = !whites_turn;
         all_legal_moves.clear();
         all_legal_moves = calc_legal_moves(whites_turn);
 
+        for (auto & mv : all_legal_moves)
+            std::cout << mv << '\n';
+
         if (all_legal_moves.empty()) {
-            std::shared_ptr<King> k_point = std::dynamic_pointer_cast<King>(pieces[get_own_king_pos(whites_turn)]);
-            calc_legal_moves(!whites_turn);
-            is_check_mate = k_point->isInCheck();
+            is_check_mate = calc_check(pieces, whites_turn);
             is_stale_mate = !is_check_mate;
         }
 
         return true;
     }
 
-    Pos Board::get_own_king_pos(bool is_white) {
-        return is_white ? w_king : b_king;
-    }
-
-    void Board::set_own_king_pos(bool is_white, Pos & new_pos) {
-        is_white ? w_king = new_pos : b_king = new_pos;
+    Pos Board::get_own_king_pos(const Piece::piece_map_t & piece_map, bool is_white) {
+        for (auto & pair : piece_map)
+            if (pair.second->getAbbreviation() == 'K' && pair.second->isWhite() == is_white) return pair.first;
+        return Pos::invalidPos;
     }
 
     Pos Board::move_piece(Piece::piece_map_t &pieces, const Move & move) {
@@ -127,7 +118,6 @@ namespace jezz {
         switch (mt) {
             case MoveType::TAKE:
             case MoveType::NORMAL:
-            case MoveType::CHECK:
                 pieces[move.to] = pieces[move.from];
                 pieces.erase(move.from);
                 return move.to;
@@ -189,5 +179,19 @@ namespace jezz {
 
     const std::vector<std::shared_ptr<Piece>> &Board::getBlackPiecesTaken() const {
         return black_pieces_taken;
+    }
+
+    bool Board::calc_check(const Piece::piece_map_t & piece_map, bool white_king) const {
+        Pos king_pos = get_own_king_pos(piece_map, white_king);
+        //TODO: THROW EXCEPTION
+        if (king_pos == Pos::invalidPos) return false;
+
+        for (auto & pair : piece_map) {
+            if (pair.second->isWhite() != white_king) {
+                if (pair.second->calc_possible_moves(pieces, pair.first).count(Move{pair.first, king_pos})) return true;
+            }
+        }
+
+        return false;
     }
 } // jezz

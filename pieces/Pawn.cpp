@@ -1,8 +1,7 @@
 #include "Pawn.h"
-#include "King.h"
 
 namespace jezz {
-    Pawn::Pawn(bool is_white) : Piece(1,is_white,is_white ? 'P' : 'p'){}
+    Pawn::Pawn(bool is_white) : Piece(1,is_white,'P'){}
 
     Move::move_set Pawn::calc_possible_moves(const piece_map_t & pieces, const Pos & curr_pos) {
         Move::move_set possible_moves;
@@ -31,14 +30,9 @@ namespace jezz {
 
         //----------------------------Take----------------------------------------------------
         auto check_for_take = [&](const Pos next_pos) {
-            if (pieces.count((next_pos)) && !pieces.at(next_pos)->is_same_color(*this)) {
-                if (pieces.at(next_pos)->getAbbreviation() == 'K') {
-                    std::shared_ptr<King> kingp = std::dynamic_pointer_cast<King>(pieces.at(next_pos));
-                    kingp->setInCheck(true);
-                    possible_moves.insert({curr_pos, next_pos, MoveType::CHECK});
-                }
+            if (pieces.count((next_pos)) && !pieces.at(next_pos)->is_same_color(*this))
                 possible_moves.insert({curr_pos, next_pos, MoveType::TAKE});
-            }
+
         };
         check_for_take(curr_pos + get_dirs_as_pos(is_white,Dir::UP, Dir::RIGHT));                                //forward right
         check_for_take(curr_pos + get_dirs_as_pos(is_white,Dir::UP, Dir::LEFT));                               //forward left

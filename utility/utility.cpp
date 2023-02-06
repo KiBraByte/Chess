@@ -5,9 +5,10 @@
 
 
 namespace jezz {
-    Pos::Pos(int y, int x) : x(x), y(y) {}
+    const Pos Pos::invalidPos = {-1,-1};
+    Pos::Pos(int y, int x) noexcept : x(x), y(y) {}
 
-    Pos::Pos(int y, char x) : y(y), x(x - 'a'){}
+    Pos::Pos(int y, char x) noexcept : y(y), x(x - 'a'){}
 
     bool Pos::operator==(const Pos &o) const {
        return (o.x == x)  && (o.y == y);
@@ -26,7 +27,7 @@ namespace jezz {
         return (os << "y: " << pos.y << " x: " << pos.x);
     }
 
-    const Move Move::invalidMove = {-1,-1,-1,-1, MoveType::NONE};
+    const Move Move::invalidMove = {Pos::invalidPos,Pos::invalidPos, MoveType::NONE};
 
 
     bool Move::operator==(const Move &m) const {
@@ -34,14 +35,14 @@ namespace jezz {
         && (to.y == m.to.y) && (to.y == m.to.y);
     }
 
-    Move::Move(Pos from, Pos to) : Move(from, to, MoveType::NONE){}
+    Move::Move(Pos from, Pos to) noexcept : Move(from, to, MoveType::NONE) {}
 
-    Move::Move(Pos from, Pos to, MoveType mv) : from(from), to(to), type(mv){}
+    Move::Move(Pos from, Pos to, MoveType mv) noexcept : from(from), to(to), type(mv){}
 
-    Move::Move(int from_y, int from_x, int to_y, int to_x, MoveType mt):
+    Move::Move(int from_y, int from_x, int to_y, int to_x, MoveType mt) noexcept :
     Move(Pos(from_y, from_x), Pos(to_y, to_x), mt){}
 
-    Move::Move(int from_y, int from_x, int to_y, int to_x):
+    Move::Move(int from_y, int from_x, int to_y, int to_x) noexcept :
     Move(from_y, from_x, to_y, to_x, MoveType::NONE){}
 
     std::ostream &operator<<(std::ostream &os, const Move &move) {
@@ -53,7 +54,6 @@ namespace jezz {
             case MoveType::NONE : return os << "NONE" ;
             case MoveType::NORMAL: return os << "NORMAL";
             case MoveType::TAKE: return os << "TAKE";
-            case MoveType::CHECK: return os << "CHECK";
             case MoveType::PROMOTION: return os << "PROMOTION";
             case MoveType::EN_PASSANT: return os << "EN_PASSANT";
             case MoveType::CASTLE_NORMAL: return os << "CASTLE_NORMAL";

@@ -21,5 +21,5 @@ namespace jezz {
         return possible_moves;
     }
 
-    Bishop::Bishop(bool is_white) : Piece(3,is_white,is_white ? 'B' : 'b') {}
+    Bishop::Bishop(bool is_white) : Piece(3,is_white,'B' ) {}
 }

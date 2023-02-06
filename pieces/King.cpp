@@ -1,7 +1,7 @@
 #include "King.h"
 
 namespace jezz {
-    King::King(bool is_white) : Piece(INT32_MAX, is_white, is_white ? 'K' : 'k') {}
+    King::King(bool is_white) : Piece(INT32_MAX, is_white,'K') {}
 
     Move::move_set King::calc_possible_moves(const Piece::piece_map_t &pieces,const Pos &curr_pos) {
 
@@ -38,20 +38,11 @@ namespace jezz {
         return possible_moves;
     }
 
-    bool King::isInCheck() const {
-        return in_check;
-    }
-
-    void King::setInCheck(bool inCheck) {
-        in_check = inCheck;
-    }
-
     Move::move_set King::check_castle(const Piece::piece_map_t &pieces, const Pos & curr_pos) {
         Move::move_set moves;
         int row = is_white ? 7 : 0;
         if (times_moved > 0) return moves;
         if (!pieces.count({row, 4}) || pieces.at({row, 4}).get() != this) return moves;
-        if (isInCheck()) return moves;
 
         Pos rook_pos{row, 7};
         //a same colored rook who hasn't moved yet

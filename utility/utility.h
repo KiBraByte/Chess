@@ -17,10 +17,11 @@ namespace jezz {
     struct Pos {
         int x;
         int y;
+        const static Pos invalidPos;
 
-        Pos(int y, int x);
+        Pos(int y, int x) noexcept;
 
-        Pos(int y, char x);
+        Pos(int y, char x) noexcept;
 
         Pos() = default;
 
@@ -32,7 +33,7 @@ namespace jezz {
     Pos operator+(const Pos & first, const Pos & second);
 
     enum class MoveType {
-        NONE, NORMAL, CHECK, TAKE, PROMOTION, EN_PASSANT, CASTLE_NORMAL, CASTLE_QUEEN
+        NONE, NORMAL, TAKE, PROMOTION, EN_PASSANT, CASTLE_NORMAL, CASTLE_QUEEN
     };
     enum class Dir {
         UP, DOWN, LEFT, RIGHT, NONE
@@ -44,13 +45,13 @@ namespace jezz {
         MoveType type;
         const static Move invalidMove;
 
-        Move(int from_y, int from_x, int to_y, int to_x);
+        Move(int from_y, int from_x, int to_y, int to_x) noexcept;
 
-        Move(int from_y, int from_x, int to_y, int to_x, MoveType mt);
+        Move(int from_y, int from_x, int to_y, int to_x, MoveType mt) noexcept;
 
-        Move(Pos from, Pos to, MoveType mv);
+        Move(Pos from, Pos to, MoveType mv) noexcept;
 
-        explicit Move(Pos from, Pos to);
+        explicit Move(Pos from, Pos to) noexcept;
 
         bool operator==(const Move &m) const;
     };

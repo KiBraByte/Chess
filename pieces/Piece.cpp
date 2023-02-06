@@ -1,5 +1,4 @@
 #include "Piece.h"
-#include "King.h"
 
 namespace jezz {
     Piece::Piece(int material, bool is_white, char abb) : material(material),
@@ -49,17 +48,12 @@ namespace jezz {
 
     jezz::Move Piece::check_pos(const piece_map_t& pieces, const Pos& from, const Pos& to) {
         if (in_bounds(to)) {
-            if (!pieces.count(to)) {
+            if (!pieces.count(to))
                 return Move{from, to, MoveType::NORMAL};
-            } else if (!(pieces.at(to)->is_same_color(*this))) {
-                if (pieces.at(to)->getAbbreviation() == 'K') {
-                    std::shared_ptr<King> kingp = std::dynamic_pointer_cast<King>(pieces.at(to));
-                    kingp->setInCheck(true);
-                    return Move{from, to, jezz::MoveType::CHECK};
-                }
+            else if (!(pieces.at(to)->is_same_color(*this)))
                 return Move{from, to, jezz::MoveType::TAKE};
-            }
         }
+
         return Move::invalidMove;
     }
 

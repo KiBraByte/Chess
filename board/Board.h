@@ -35,8 +35,7 @@ namespace jezz {
         //void print_board(Piece::piece_map_t & pieces);
         bool is_legal_move(const Move & move);
         bool move(const Move & move);
-        Pos get_own_king_pos(bool is_white);
-        void set_own_king_pos(bool is_white, Pos & new_pos);
+        static Pos get_own_king_pos(const Piece::piece_map_t & piece_map, bool is_white) ;
         Move::move_set calc_legal_moves(bool is_white);
         //bool is_board_valid(Piece::piece_map_t & new_board);
         //void calc_all_possible_moves();
@@ -48,6 +47,8 @@ namespace jezz {
         const std::vector<std::shared_ptr<Piece>> &getWhitePiecesTaken() const;
 
         const std::vector<std::shared_ptr<Piece>> &getBlackPiecesTaken() const;
+
+        bool calc_check(const Piece::piece_map_t & piece_map,bool white_king) const;
     };
 } // jezz
 #endif //CHESS_BOARD_H

@@ -1,7 +1,7 @@
 #include "Rook.h"
 namespace jezz {
 
-    Rook::Rook(bool is_white) : Piece(5, is_white, is_white ? 'R' : 'r') {}
+    Rook::Rook(bool is_white) : Piece(5, is_white, 'R') {}
 
     Move::move_set Rook::calc_possible_moves(const Piece::piece_map_t &pieces,const Pos &curr_pos) {
         //TODO: implement

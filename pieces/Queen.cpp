@@ -2,7 +2,7 @@
 
 namespace jezz {
 
-    Queen::Queen(bool is_white) : Piece(9, is_white, is_white ? 'Q' : 'q') {}
+    Queen::Queen(bool is_white) : Piece(9, is_white, 'Q') {}
 
     Move::move_set Queen::calc_possible_moves(const Piece::piece_map_t &pieces, const Pos &curr_pos) {
         //-----------------moves/take--------------------------------
