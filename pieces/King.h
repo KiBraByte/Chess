@@ -1,6 +1,5 @@
 #ifndef CHESS_KING_H
 #define CHESS_KING_H
-
 #include "./Piece.h"
 #include "../utility/utility.h"
 

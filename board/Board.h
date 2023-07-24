@@ -14,13 +14,18 @@ namespace jezz {
 
 
     class Board {
+    public:
+        enum class Status {
+            ON_GOING, DRAW, WHITE_WON, BLOCK_WON
+        };
     private:
         Piece::piece_map_t pieces;
         Move::move_set all_legal_moves;
         Pos w_king{7,'e'}, b_king{0,'e'};
         std::vector<std::shared_ptr<Piece>> white_pieces_taken;
         std::vector<std::shared_ptr<Piece>> black_pieces_taken;
-        bool whites_turn{true}, is_check_mate{false}, is_stale_mate{false};
+        bool whites_turn{true};
+        Status status {Status::ON_GOING};
 
         static Pos move_piece(Piece::piece_map_t & pieces, const Move & move);
         const std::function<void(const Pos &)> add_to_taken = [&](const Pos & pos) {
@@ -40,15 +45,17 @@ namespace jezz {
         //bool is_board_valid(Piece::piece_map_t & new_board);
         //void calc_all_possible_moves();
 
-        bool isCheckMate() const;
-
-        bool isStaleMate() const;
+        Status getStatus() const;
 
         const std::vector<std::shared_ptr<Piece>> &getWhitePiecesTaken() const;
 
         const std::vector<std::shared_ptr<Piece>> &getBlackPiecesTaken() const;
 
-        bool calc_check(const Piece::piece_map_t & piece_map,bool white_king) const;
+        static bool calc_check(const Piece::piece_map_t & piece_map,bool white_king) ;
+
+        bool isWhitesTurn() const;
     };
 } // jezz
+
+std::ostream & operator<<(std::ostream & os, jezz::Board::Status s);
 #endif //CHESS_BOARD_H

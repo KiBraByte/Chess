@@ -19,22 +19,16 @@ namespace jezz {
 
         p = curr_pos + get_dirs_as_pos(is_white,Dir::UP,Dir::UP,Dir::LEFT);
         check_pos_and_insert();
-
         p = curr_pos + get_dirs_as_pos(is_white, Dir::DOWN,Dir::DOWN,Dir::RIGHT);
         check_pos_and_insert();
-
         p = curr_pos + get_dirs_as_pos(is_white, Dir::DOWN,Dir::DOWN,Dir::LEFT);
         check_pos_and_insert();
-
         p = curr_pos + get_dirs_as_pos(is_white, Dir::UP,Dir::RIGHT,Dir::RIGHT);
         check_pos_and_insert();
-
         p = curr_pos + get_dirs_as_pos(is_white, Dir::UP,Dir::LEFT,Dir::LEFT);
         check_pos_and_insert();
-
         p = curr_pos + get_dirs_as_pos(is_white, Dir::DOWN,Dir::RIGHT,Dir::RIGHT);
         check_pos_and_insert();
-
         p = curr_pos + get_dirs_as_pos(is_white, Dir::DOWN,Dir::LEFT,Dir::LEFT);
         check_pos_and_insert();
 

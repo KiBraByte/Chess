@@ -44,24 +44,27 @@ namespace jezz {
 
 
     void Board::print_board() const {
-        std::cout << "\n\n  ";
+        std::cout << "\n  ";
         for (int i{0}; i < columns; ++i) std::cout << i << ' ';
         std::cout << "\n";
 
         for (Pos pos(0,0); pos.y < rows; ++pos.y) {
             std::cout << pos.y << ' ';
             for (pos.x = 0; pos.x < columns; ++pos.x) {
+                
+   
                 char c = pieces.count(pos) > 0 ? pieces.at(pos)->getAbbreviation() : '.';
                 if (pieces.count(pos) && !pieces.at(pos)->isWhite())
                     //std::cout << "\033[1;31m" << c << "\033[0m ";
-                    c = (char)(c - ('A' - 'a'));
-                std::cout << c << ' ';
+                    std::cout << (char)(c - ('A' - 'a')) << ' ';
+                else std::cout << c << ' ';
             }
             std::cout << '\n';
         }
     }
     // check if the move is legal, doesn't change the value of in_check
     bool Board::is_legal_move(const Move & move) {
+        if (status != Status::ON_GOING) return false;
         if (!pieces.count(move.from)) return false;
         if (pieces[move.from]->isWhite() != whites_turn) return false;
         if (!pieces[move.from]->calc_possible_moves(pieces, move.from)
@@ -96,8 +99,10 @@ namespace jezz {
             std::cout << mv << '\n';
 
         if (all_legal_moves.empty()) {
-            is_check_mate = calc_check(pieces, whites_turn);
-            is_stale_mate = !is_check_mate;
+            bool is_checkmate = calc_check(pieces, whites_turn);
+            if (is_checkmate)
+                status = whites_turn ? Status::BLOCK_WON : Status::WHITE_WON;
+            else status = Status::DRAW;
         }
 
         return true;
@@ -113,7 +118,7 @@ namespace jezz {
         Move::move_set moves = pieces[move.from]->calc_possible_moves(pieces,move.from);
         MoveType mt = moves.find(move)->type;
 
-        int row = pieces[move.from]->isWhite() ? 7 : 0;
+        int row = pieces[move.from]->isWhite() ? (rows - 1) : 0;
 
         switch (mt) {
             case MoveType::TAKE:
@@ -156,23 +161,13 @@ namespace jezz {
             if (pos_piece.second->isWhite() == is_white) {
                tmp_moves = pos_piece.second->calc_possible_moves(pieces, pos_piece.first);
                for (auto & mv : tmp_moves) {
-                   if (is_legal_move( mv)) {
+                   if (is_legal_move(mv))
                        legal_mvs.insert(mv);
-                   }
                }
             }
         }
         return legal_mvs;
     }
-
-    bool Board::isCheckMate() const {
-        return is_check_mate;
-    }
-
-    bool Board::isStaleMate() const {
-        return is_stale_mate;
-    }
-
     const std::vector<std::shared_ptr<Piece>> &Board::getWhitePiecesTaken() const {
         return white_pieces_taken;
     }
@@ -181,17 +176,32 @@ namespace jezz {
         return black_pieces_taken;
     }
 
-    bool Board::calc_check(const Piece::piece_map_t & piece_map, bool white_king) const {
+    bool Board::calc_check(const Piece::piece_map_t & piece_map, bool white_king) {
         Pos king_pos = get_own_king_pos(piece_map, white_king);
         //TODO: THROW EXCEPTION
         if (king_pos == Pos::invalidPos) return false;
 
-        for (auto & pair : piece_map) {
-            if (pair.second->isWhite() != white_king) {
-                if (pair.second->calc_possible_moves(pieces, pair.first).count(Move{pair.first, king_pos})) return true;
-            }
-        }
+        return std::any_of(piece_map.begin(), piece_map.end(), [=](auto& entry) {
+            if (entry.second->isWhite() == white_king) return false;
+            return (bool) entry.second->calc_possible_moves(piece_map, entry.first).count(Move{entry.first, king_pos});
+        });
+    }
 
-        return false;
+    Board::Status Board::getStatus() const {
+        return status;
+    }
+
+    bool Board::isWhitesTurn() const {
+        return whites_turn;
     }
 } // jezz
+std::ostream &operator<<(std::ostream &os, jezz::Board::Status s) {
+    switch (s){
+        case jezz::Board::Status::ON_GOING: return (os << "ON_GOING");
+        case jezz::Board::Status::DRAW: return (os << "DRAW");
+        case jezz::Board::Status::WHITE_WON: return (os << "WHITE_WON");
+        case jezz::Board::Status::BLOCK_WON: return (os << "BLACK_WON");
+    }
+
+    return os << static_cast<std::uint16_t>(s);
+}

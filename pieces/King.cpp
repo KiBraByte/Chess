@@ -40,17 +40,17 @@ namespace jezz {
 
     Move::move_set King::check_castle(const Piece::piece_map_t &pieces, const Pos & curr_pos) {
         Move::move_set moves;
-        int row = is_white ? 7 : 0;
+        int row = is_white ? (rows - 1) : 0;
         if (times_moved > 0) return moves;
         if (!pieces.count({row, 4}) || pieces.at({row, 4}).get() != this) return moves;
 
-        Pos rook_pos{row, 7};
+        Pos rook_pos{row, (rows - 1)};
         //a same colored rook who hasn't moved yet
         if (pieces.count(rook_pos) && pieces.at(rook_pos)->getAbbreviation() == 'R'
             && pieces.at(rook_pos)->isWhite() == is_white && pieces.at(rook_pos)->getTimesMoved() == 0)
             //if there are no pieces in between
-            if (!pieces.count({row,5}) && !pieces.count({row,6}))
-                moves.insert(Move{curr_pos, {row,7}, MoveType::CASTLE_NORMAL});
+            if (!pieces.count({row,(columns - 3)}) && !pieces.count({row,(columns - 2)}))
+                moves.insert(Move{curr_pos, {row,(columns - 1)}, MoveType::CASTLE_NORMAL});
 
         Pos queen_rook_pos{row, 0};
         if (pieces.count(queen_rook_pos) && pieces.at(queen_rook_pos)->getAbbreviation() == 'R'

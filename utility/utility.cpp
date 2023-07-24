@@ -1,8 +1,4 @@
-//
-// Created by kilian on 1/20/2023.
-//
 #include "utility.h"
-
 
 namespace jezz {
     const Pos Pos::invalidPos = {-1,-1};
@@ -67,20 +63,6 @@ namespace jezz {
     std::unordered_map<Dir, Pos> dir_as_pos = {{Dir::DOWN, {1,0}}, {Dir::UP, {-1,0}},
                                                {Dir::LEFT, {0,-1}},{Dir::RIGHT, {0,1}},
                                                {Dir::NONE, {0,0}}};
-
-
-//TODO: maybe variadic function ?
-   /* Pos get_dirs_as_pos(Dir dir, bool is_white) {
-        Pos pos (dir_as_pos[dir]);
-        pos.y *= (is_white ? 1 : -1);
-        return pos;
-    }*/
-
-    /*Pos get_dirs_as_pos(Dir dir, Dir dir2, bool is_white) {
-        Pos pos ((dir_as_pos[dir] + dir_as_pos[dir2]));
-        pos.y *= (is_white ? 1 : -1);
-        return pos;
-    }*/
 
     Pos get_dirs_as_pos(bool is_white, Dir dir, Dir dir2,Dir dir3) {
         Pos pos ((dir_as_pos[dir] + dir_as_pos[dir2] + dir_as_pos[dir3]));

@@ -7,11 +7,9 @@ namespace jezz {
         Move::move_set possible_moves;
 
         if (!pieces.count(curr_pos) && this != pieces.at(curr_pos).get()) return possible_moves;
-        if (curr_pos.y > (rows - 1) || curr_pos.y < 0 || curr_pos.x > (columns - 1) || curr_pos.x < 0) return possible_moves;
         //----------------------------Promotions---------------------------------------------
         if (curr_pos.y == (rows - 1)  || curr_pos.y == 0)
             possible_moves.insert({curr_pos, curr_pos, MoveType::PROMOTION});
-
 
         const Pos up_pos = curr_pos + get_dirs_as_pos(is_white, Dir::UP);                                    //Position when moved one field forward
         if ((up_pos.y == 0 || up_pos.y == rows - 1) && !pieces.count(up_pos))

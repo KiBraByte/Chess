@@ -1,9 +1,7 @@
 #include "./board/Board.h"
 #include <sstream>
 #include <string>
-#include <thread>
 
-//TODO:: cannot castle when in check, checkmate error ?
 jezz::Pos ask_pos() {
     int y, x;
     std::string line;
@@ -19,7 +17,7 @@ int main() {
     b.print_board();
 
     jezz::Pos from{}, to{};
-    while (!b.isCheckMate() && !b.isStaleMate()) {
+    while (b.getStatus() == jezz::Board::Status::ON_GOING) {
         std::cout << "White pieces taken: ";
          for (auto & p : b.getWhitePiecesTaken())
              std::cout << *p << ' ';
@@ -35,7 +33,11 @@ int main() {
              std::cout << "to: ";
              to = ask_pos();
          } while (!b.move(jezz::Move{from, to}));
+         std::cout << (b.isWhitesTurn() ? "WHITES_TURN" : "BLACKS_TURN") << '\n';
          b.print_board();
     }
+    b.print_board();
+
+    std::cout << b.getStatus() << '\n';
 }
 

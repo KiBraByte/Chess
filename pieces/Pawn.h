@@ -1,6 +1,5 @@
 #ifndef CHESS_PAWN_H
 #define CHESS_PAWN_H
-
 #include "Piece.h"
 #include "../utility/utility.h"
 

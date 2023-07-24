@@ -4,11 +4,6 @@ namespace jezz {
     Rook::Rook(bool is_white) : Piece(5, is_white, 'R') {}
 
     Move::move_set Rook::calc_possible_moves(const Piece::piece_map_t &pieces,const Pos &curr_pos) {
-        //TODO: implement
-        //if (this != pieces[curr_pos].get()) return;
-
-
-        //-----------------moves/take--------------------------------
         Move::move_set possible_moves, tmp_moves;
 
         if (!pieces.count(curr_pos) && this != pieces.at(curr_pos).get()) return possible_moves;

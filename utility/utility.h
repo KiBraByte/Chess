@@ -1,7 +1,3 @@
-//
-// Created by kilian on 1/20/2023.
-//
-
 #ifndef CHESS_UTILITY_H
 #define CHESS_UTILITY_H
 

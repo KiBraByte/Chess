@@ -20,10 +20,6 @@ namespace jezz {
        ++times_moved;
     }
 
-    /*const Move::move_set & Piece::get_possible_moves() const {
-        return possible_moves;
-    }*/
-
     bool Piece::is_same_color(const Piece & other) const {
         return is_white == other.is_white;
     }
@@ -41,10 +37,6 @@ namespace jezz {
         }
         return moves;
     }
-
-    /*void Piece::setPossibleMoves(const Move::move_set &possibleMoves) {
-        possible_moves = possibleMoves;
-    }*/
 
     jezz::Move Piece::check_pos(const piece_map_t& pieces, const Pos& from, const Pos& to) {
         if (in_bounds(to)) {
